@@ -17,5 +17,32 @@ The standard formatted file contains information of unique IDs for the predicted
 gene name for the substrates, Uniprot accessions for the substrates, site (aa + position in protein seq), peptide sequences around the sites, scores, 
 common kinase names use across all predictors.
 
-Two python modules are used to achieve the goal: [getUniprotID.py](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/getUniprotID.py) 
-and [checkSite.py](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/checkSite.py)
+Two python modules are used to achieve the goal: 
+- [getUniprotID.py](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/getUniprotID.py): to get the Uniprot accession by query the given `id` (and `id_type`) in Uniprot.org. The Uniprot accession is used as the common asscession for substrate (protein) and kinase identifier.  
+  ```def getUniprotID(id, id_type):```\
+   Parameters:   
+   - id (str): the search term 
+   - id_type (str): the search type:
+     - gene name (gene/protein name)
+     - other (other type of accession)
+   
+   Return:
+   - Uniport accession 
+    
+- [checkSite.py](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/checkSite.py): positionally map the given substrate site to the given reference humnan proteome. \
+  ```def checkSite(id, site, pep, pos_in_pep, HP_df):```\
+    Parameters:
+    - id (str):  substrate accession (uniprot accession)
+    - site (str or int):
+        - str : aa + postion in protein sequence
+        - int: postion in protein sequence
+    - pep (str): given peptide sequence around the site
+    - pos_in_pep (int): position in the peptide
+    - HP_df (df): the dataframe of the reference human proteome sequence
+    
+    Returns:
+    - new_site (str): site mapped to the given reference human proteome in the format of amino acid + postion in protein sequence
+    - site_confirm (bool)
+    
+
+Please see [gps_convert.py](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/gps_convert.py), [phosphoPick_convert.py](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/phosphoPick_convert.py), and [networKin_convert.py](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/networKin_convert.py) as example to apply the above modules while iterate thought predicted substrates and sites in multiple files. 
