@@ -2,7 +2,7 @@
 
 This vignette shows how to use KinPred code to:
 1) replicate the preprocessed prediction data for PhosphoPICK, NetworKIN, and GPS
-2) incorporate the provided python modules to process the prediction data of other kinase-substrate predictor to the standarlized format. 
+2) incorporate the provided python modules to process the prediction data of other kinase-substrate predictor to the standardized format. 
 
 ## Replicate KinPred preprocessed data for PhosphoPICK, NetworKIN, and GPS
 Please see [FormattingPhosphoPICK.ipynb](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/FormattingPhosphoPICK.ipynb), 
