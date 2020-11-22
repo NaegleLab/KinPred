@@ -20,6 +20,3 @@ When the phosphoproteome has been updated, then use the UpdatingResourceData/Upd
 ### Underlying Reference Proteome Update
 The underlying Uniprot database of the human reference proteome often undergoes changes, such that the substrate and kinase relationships of an old reference are now invalid. Since running predictions anew on the entire reference proteome is costly, we have provided scripts to identify changes in the reference proteome that have an effect on predictions (i.e. the sequence or position of a phosphorylation site has changed), and that site position in the ontology is updated, or a subset of sequences must be run and these replace the existing predictions for that protein in the Formatted, list output of prediction resources. See Code/UpdatingResourceData
 
-All the code used in the study "Unifying and Comparing Multiple Kinase-Substrate Prediction Networks for the Human Phosphoproteome" are stored under "Code".  Please see the README.md files inside "Code" for more detail. Generating updates for current phosphoproteome requires the ProteomeScoutAPI available at https://github.com/NaegleLab/ProteomeScoutAPI. 
-
-All the raw data and output files of the study should store under "Data".  Please see the README.md files inside "Data" for more detail on the directory structure.
