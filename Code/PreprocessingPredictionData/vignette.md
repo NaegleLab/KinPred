@@ -10,7 +10,7 @@ Please see [FormattingPhosphoPICK.ipynb](https://github.com/NaegleLab/KinPred/bl
 and [FormattingGPS.ipynb](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/FormattingGPS.ipynb), 
 and follow the steps to replicate the KinPred preprocessed data.
 
-## Preprocess data from other kinase-substrate predictor to the standarlized format
+## Preprocess data from other kinase-substrate predictor to the standardized format
 The goal of the KinPred preprocessing step is to standardize the data format across all prediction algorithms. The standard formatted file includes all 
 predictions on human kinase-substrate relationships where the predicted sites are mapped to the fixed version of human proteome. 
 The standard formatted file contains information of unique IDs for the predicted phosphorylation site (substrate protein accession + position in protein seq),
