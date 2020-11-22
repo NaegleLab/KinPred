@@ -3,12 +3,12 @@ All the raw data and output files of the study should store under "Data". The "D
 - **Data**
   - **Raw**:  
     - **GPS**: 
-      - 21 GPS5.0 raw prediction files(data avalible upon request), 
+      - 21 GPS5.0 raw prediction files (please see `Get GPS Result Files` section under `Instruction` in [FormattingGPS.ipynb](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/FormattingGPS.ipynb) ), 
       - GPS kinase predictor cutoff score files (available at: https://doi.org/10.6084/m9.figshare.12749333.v1, Raw(unfiltered) Data Files for KinPred)
     - **PhosphoPICK**: 
-      - 21 PhosphoPICK raw prediction files (data avalible upon request)
+      - 21 PhosphoPICK raw prediction files (please see `Get PhosphPICK Result Files` section under `Instruction` in [FormattingPhosphoPICK.ipynb](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/FormattingPhosphoPICK.ipynb) )
     - **NetworKIN**: 
-      - 21 NetworKIN raw predictions files (data avalible upon request)
+      - 21 NetworKIN raw predictions files (please see `Get NetworKIN Result Files` section under `Instruction` in [FormattingNetworKIN.ipynb](https://github.com/NaegleLab/KinPred/blob/master/Code/PreprocessingPredictionData/FormattingNetworKIN.ipynb) )
     - **HumanKinase**: 
       - globalKinaseMap.txt: manually created list of human kinases, this is the base of the final globalKinaseMap.csv
     - **HumanProteome**: 
