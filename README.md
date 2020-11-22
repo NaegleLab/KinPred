@@ -1,6 +1,10 @@
 Welcome to the Github repository for the KinPred v1.0 project, which seeks to create sustainable and usable formats of whole human proteome predictions of kinases with site-specific substrates. Details of code are available within the Code and Data directory readme files. For orientation, the likely workflows you may be interested in, include:
 
 # Users of KinPred-formatted Prediction Algorithm Resources
+Researchers wishing to understand how to use the Final Data Matrices of kinase-substrate predictions, should consider the following possible workflows:
+1. Get the [Final Data of KinPred v1.0 resource](https://figshare.com/projects/KinPred_v1_0/86885). This matrices, in .CSV formats, include the controlled ontology for substrates *rows* (site-specific phosphorylation sites in human proteins) and kinases predicted by that resource *columns*, with matrix(i,j) values where the entry is the edge weight between substrate i and kinase j. These results are not filtered by stringency.
+2. See example types of analysis code that produced figures and analysis for our [KinPred publication](https://www.biorxiv.org/content/10.1101/2020.08.10.244426v1). These ipython notebooks can be found under Code/Comparison.
+3. When developers update these resources, this documentation will be updated to reflect the latest version of the datasets. 
 
 
 # Developers of kinase-substrate prediction algorithms
