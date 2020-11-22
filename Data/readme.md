@@ -1,4 +1,4 @@
-All the raw data and output files of the study should store under "Data". The "Data" derictory should have the following strudcture:
+All the raw data and output files of the study should store under "Data". The "Data" derictory should have the following structure:
 
 - **Data**
   - **Raw**:  
