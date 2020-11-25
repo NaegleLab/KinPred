@@ -142,6 +142,8 @@ def kin_convert_directory(load_directory, reference_filename, save_directory, co
         acc (convert substrate/kinase accession)
         OR, site (mapping site to reference sequence)
     """
+    if not os.path.exists(save_directory):
+                os.mkdir(save_directory) 
     # for converting substrate and kinase accession
     if convert_type == 'acc':
         all_files = glob.glob(load_directory + '*.txt')

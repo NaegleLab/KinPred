@@ -153,6 +153,9 @@ def gps_convert_directory(load_directory, reference_filename, save_directory, co
         acc (convert substrate/kinase accession)
         OR, site (mapping site to reference sequence)
     """
+    if not os.path.exists(save_directory):
+                os.mkdir(save_directory) 
+                
     # for converting substrate and kinase accession
     if convert_type == 'acc':
         valid_kinases = pd.read_csv(reference_filename)
@@ -163,7 +166,7 @@ def gps_convert_directory(load_directory, reference_filename, save_directory, co
             name = re.search(r'.+\/(.+)\.gps\.fasta$', filename).group(1)
             print ("Formatting ", name, "...")
             df = convert_acc(filename, valid_kinases)
-   
+            
             df.to_csv(save_directory + name + '.csv', index=False)
             
             end = time.time()

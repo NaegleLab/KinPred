@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 import re
+import os
 from Bio import SeqIO
 from Bio.SeqIO.FastaIO import SimpleFastaParser
 from datetime import date
@@ -26,6 +27,8 @@ def downloadHumanProteomes (saveFileAs):
     # get the result of the query 
     result = requests.get(url, params=payload)
     # write the result in a fasta file
+    if not os.path.exists(os.path.dirname(saveFileAs)):
+                os.mkdir(os.path.dirname(saveFileAs)) 
     if result.ok:
         file = open(saveFileAs, 'w')
         file.write(result.text)
@@ -45,6 +48,8 @@ def downloadFasta (id_df, fileName):
         saving dir of the downloaded fasta file
 
     """
+    if not os.path.exists(os.path.dirname(fileName)):
+        os.mkdir(os.path.dirname(fileName)) 
     file = open(fileName, 'w')
     # set the url for the query
     url = 'http://www.uniprot.org/uniprot/'
@@ -140,6 +145,8 @@ def fastaToCSV (input, output):
         'sequence'
 
     """
+    if not os.path.exists(os.path.dirname(output)):
+        os.mkdir(os.path.dirname(output)) 
     # convert the HumanProteome fasta file into a tab delimited csv
     with open (output,"w") as seq_df:
         # create header/column names
