@@ -22,7 +22,7 @@ def getPScoutData():
 
     Output:
     ------------------------------------------
-    download and unzipped ProteomeScout data are is saved in 
+    download and unzipped ProteomeScout data are saved in 
     `/Data/ProteomeScout_Update` directory:
         data.tsv
         citations.tsv
@@ -56,18 +56,31 @@ def getHumanPTMs(pscout_data, ref_proteome):
     """
     get the current human phosphoproteome data
     map the site to the reference human proteome
+
+    Parameters
+    ----------
+    pscout_data : str
+        path to the ProteomeScout data
+    ref_proteome : str
+        path to the reference human proteome
+
+    Return 
+    -----------
+    df: dataframe of the ProteomeScout data that 
+        mapped to the reference human proteome
     
     """
     dir = '../../Data/Map/HumanProteome/'
     HP_df = '../../Data/Map/HumanProteome/' + os.path.splitext(os.path.basename(ref_proteome))[0]+'.csv'
     PS_update = '../../Data/Raw/ProteomeScout_Update/Human_PhosphOme_all.csv'
 
-    accessions = []
+    
     # get the list of substrate protein uniprotID from the reference human proteome
-    with open (ref_proteome, 'r') as f:
-        for title, sequence in SimpleFastaParser(f):
-                identifier = re.match(r'sp\|(\S+)\|(\S+_HUMAN).+', title)
-                accessions.append(identifier.group(1))
+    if not os.path.exists(dir):
+        os.mkdir(dir) 
+    human_proteome_df = humanProteomesReference.fastaToCSV(ref_proteome, HP_df )
+
+    accessions = human_proteome_df['UniprotID']
 
     # for every human protein, get the phosphosites and append to a dataframe, can require they have at least some number
     # of pieces of evidence
@@ -93,9 +106,6 @@ def getHumanPTMs(pscout_data, ref_proteome):
                         pep = pep[0:len(pep)]+"_"*replace
                     pep = pep.upper()
                     pos_in_pep = 8 #e.g. set to 8 for a 15-mer
-                    if not os.path.exists(dir):
-                        os.mkdir(dir) 
-                    human_proteome_df = humanProteomesReference.fastaToCSV(ref_proteome, HP_df )
                     new_site, site_confirm = checkSite.checkSite(acc, aaSite, pep, pos_in_pep, human_proteome_df) #e.g. set to 7 for a 15-mer
                     # if the site mapped to the referece human proteome seq at the exact position, the new_site = site, site_confirm = True
                     # if the peptide mapped to the referece human proteome seq with a shift in position, new_site = site + shift, site_confirm = True
@@ -115,7 +125,27 @@ def getHumanPTMs(pscout_data, ref_proteome):
     df.to_csv(PS_update)
     return df
 
-def XRefProteomeScout(pscout_data, ref_proteome, oldversion):
+def XRefProteomeScout(pscout_data, ref_proteome, old_version):
+    """
+    Cross reference with ProteomeScout
+    the final formatted file only contains data with confirmed phosphorylation site
+    Create final substrate/kinase matrices for PhosphoPICK, GPS, and NetworKIN 
+
+    Parameters
+    ----------
+    pscout_data : str
+        path to the ProteomeScout data
+    ref_proteome : str
+        path to the reference human proteome
+    old_version: str (YYYY-MM-DD)
+        input (unfiltered) file version
+
+    Output
+    -----------
+    final standard formated files saved in 
+    `../../Data/Final/` directory
+    
+    """
     
     # preprocessed prediction data 
     in_dir = '../../Data/Formatted/'
@@ -124,10 +154,10 @@ def XRefProteomeScout(pscout_data, ref_proteome, oldversion):
     NW_file = in_dir + 'NetworKIN/NetworKIN_formatted_' + oldversion + '.csv'      # NetworKIN files
 
     # output dir
-    out_dir = '../../Data/Final/'
-    pp = 'PhosphoPICK/PhosphoPICK_' + date.today()
-    gps = 'GPS/GPS_' + date.today()
-    nw = 'NetworKIN/NetworKIN_' + date.today()
+    out_dir = '../../Data/Test/'
+    pp = 'PhosphoPICK/PhosphoPICK_' + date.today().strftime('%Y-%m-%d')
+    gps = 'GPS/GPS_' + date.today().strftime('%Y-%m-%d')
+    nw = 'NetworKIN/NetworKIN_' + date.today().strftime('%Y-%m-%d')
     
 
     pscout_df = getHumanPTMs(pscout_data, ref_proteome)
@@ -138,6 +168,8 @@ def XRefProteomeScout(pscout_data, ref_proteome, oldversion):
     for file in file_list:
         df = pd.read_csv(file)
         df = df[df['substrate_id'].isin(pscout_df['substrate_id'])]
+        if not os.path.exists(os.path.dirname(out_list[i])):
+            os.mkdir(os.path.dirname(out_list[i])) 
         df.to_csv(out_list[i] + '.csv')
         df_matrix = createSubKinMatrix.createMatrix(out_list[i] + '.csv', out_list[i] + '_matrix.csv')
         i += 1 
