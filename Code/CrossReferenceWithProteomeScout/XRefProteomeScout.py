@@ -3,6 +3,9 @@ sys.path.append('../../../ProteomeScoutAPI/')
 from proteomeScoutAPI import ProteomeScoutAPI
 sys.path.append('../../../KinaseActivity2019/')
 from kinase_activity.src import experiment
+sys.path.append('../PreprocessingPredictionData/')
+import checkSite, humanProteomesReference
+import createSubKinMatrix
 import pandas as pd
 import re
 import os
@@ -11,10 +14,6 @@ from Bio.SeqIO.FastaIO import SimpleFastaParser
 from urllib.request import urlopen
 from zipfile import ZipFile
 from io import BytesIO
-sys.path.append('../../PreprocessingPredictionData/')
-import checkSite, humanProteomesReference, createSubKinMatrix
-
-
 
 def getPScoutData():
     """
@@ -31,10 +30,10 @@ def getPScoutData():
     # ProteomeScout phosphorylation data zip file downloading address
     data_add = 'https://proteomescout.wustl.edu/compendia/proteomescout_phosphorylation.zip'
     # phosphorylation data file name in the zip file
-    data_file = 'data.tsv'
-    citation_file = 'citations.tsv'
+    data_file = 'data'
+    citation_file = 'citations'
     # output dir
-    dir = '../../Data/Raw/ProteomeScout_Update/'
+    dir = '../../Data/Raw/ProteomeScout_'+date.today().strftime('%Y-%m-%d')
 
     resp = urlopen(data_add)
     zipfile = ZipFile(BytesIO(resp.read()))
@@ -42,13 +41,13 @@ def getPScoutData():
     if not os.path.exists(dir):
         os.mkdir(dir) 
 
-    file = open(os.path.join(dir, data_file), 'w')
-    for line in zipfile.open(data_file).readlines():
+    file = open(os.path.join(dir, data_file+".tsv"), 'w')
+    for line in zipfile.open(data_file+".tsv").readlines():
         file.write(line.decode('utf-8'))
     file.close()
 
-    file = open(os.path.join(dir, citation_file), 'w')
-    for line in zipfile.open(citation_file).readlines():
+    file = open(os.path.join(dir, citation_file+".tsv"), 'w')
+    for line in zipfile.open(citation_file+".tsv").readlines():
         file.write(line.decode('utf-8'))
     file.close()
 
@@ -72,7 +71,7 @@ def getHumanPTMs(pscout_data, ref_proteome):
     """
     dir = '../../Data/Map/HumanProteome/'
     HP_df = '../../Data/Map/HumanProteome/' + os.path.splitext(os.path.basename(ref_proteome))[0]+'.csv'
-    PS_update = '../../Data/Raw/ProteomeScout_Update/Human_PhosphOme_all.csv'
+    PS_update = os.path.dirname(pscout_data)+'Human_PhosphOme_all.csv'
 
     
     # get the list of substrate protein uniprotID from the reference human proteome
@@ -149,15 +148,15 @@ def XRefProteomeScout(pscout_data, ref_proteome, old_version):
     
     # preprocessed prediction data 
     in_dir = '../../Data/Formatted/'
-    PP_file = in_dir + 'PhosphoPICK/PhosphoPICK_formatted_' + oldversion + '.csv'  # PhosphoPICK files      
-    GPS_file = in_dir + 'GPS/GPS_formatted_' + oldversion + '.csv'                 # GPS files
-    NW_file = in_dir + 'NetworKIN/NetworKIN_formatted_' + oldversion + '.csv'      # NetworKIN files
+    PP_file = in_dir + 'PhosphoPICK/PhosphoPICK_formatted_' + old_version + '.csv'  # PhosphoPICK files      
+    GPS_file = in_dir + 'GPS/GPS_formatted_' + old_version + '.csv'                 # GPS files
+    NW_file = in_dir + 'NetworKIN/NetworKIN_formatted_' + old_version + '.csv'      # NetworKIN files
 
     # output dir
-    out_dir = '../../Data/Test/'
-    pp = 'PhosphoPICK/PhosphoPICK_' + date.today().strftime('%Y-%m-%d')
-    gps = 'GPS/GPS_' + date.today().strftime('%Y-%m-%d')
-    nw = 'NetworKIN/NetworKIN_' + date.today().strftime('%Y-%m-%d')
+    out_dir = '../../Data/Final/'
+    pp = out_dir+'PhosphoPICK/PhosphoPICK_' + date.today().strftime('%Y-%m-%d')
+    gps = out_dir+'GPS/GPS_' + date.today().strftime('%Y-%m-%d')
+    nw = out_dir+'NetworKIN/NetworKIN_' + date.today().strftime('%Y-%m-%d')
     
 
     pscout_df = getHumanPTMs(pscout_data, ref_proteome)
