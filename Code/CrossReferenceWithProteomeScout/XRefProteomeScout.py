@@ -1,8 +1,6 @@
 import sys
 sys.path.append('../../../ProteomeScoutAPI/')
 from proteomeScoutAPI import ProteomeScoutAPI
-sys.path.append('../../../KinaseActivity2019/')
-from kinase_activity.src import experiment
 sys.path.append('../PreprocessingPredictionData/')
 import checkSite, humanProteomesReference
 import createSubKinMatrix
@@ -95,16 +93,8 @@ def getHumanPTMs(pscout_data, ref_proteome):
                 if PTM[2] in ['Phosphoserine', 'Phosphothreonine', 'Phosphotyrosine']:
                     site = int(PTM[0])
                     aaSite = "%s%d"%(PTM[1], site)
-                    pep = experiment.get_aligned_peptide(aaSite, seq, 7) #e.g. set to 7 for a 15-mer
-                    idx = [i for i, a in enumerate(pep) if a.islower()][0]
-                    if idx < 7:
-                        replace = 7-idx # number of '_' append to the beginning of the pep seq
-                        pep = "_" * replace + pep[0:len(pep)]
-                    elif idx == 7 and len(pep) < 15 :
-                        replace = 15 - len(pep) # number of '_' append to the end of the pep seq
-                        pep = pep[0:len(pep)]+"_"*replace
-                    pep = pep.upper()
                     pos_in_pep = 8 #e.g. set to 8 for a 15-mer
+                    pep = checkSite.getPep (site, pos_in_pep, seq) #e.g. set to 8 for a 15-mer
                     new_site, site_confirm = checkSite.checkSite(acc, aaSite, pep, pos_in_pep, human_proteome_df) #e.g. set to 7 for a 15-mer
                     # if the site mapped to the referece human proteome seq at the exact position, the new_site = site, site_confirm = True
                     # if the peptide mapped to the referece human proteome seq with a shift in position, new_site = site + shift, site_confirm = True
